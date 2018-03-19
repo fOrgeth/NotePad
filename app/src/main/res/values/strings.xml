@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">NotePad</string>
+    <string name="action_settings">Settings</string>
+    <string name="edit_activity">Editor</string>
+    <string-array name="demo_notes">
+        <item>Title1-date1</item>
+        <item>Title2-date2</item>
+        <item>Title3-date3</item>
+        <item>Title4-date4</item>
+        <item>Title5-date5</item>
+    </string-array>
+</resources>
