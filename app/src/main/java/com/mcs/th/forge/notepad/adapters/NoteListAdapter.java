@@ -16,11 +16,9 @@ import java.util.List;
 
 public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHolder> {
     private List<Note> mNotes;
-    private Context mContext;
 
     public NoteListAdapter(List<Note> notes, Context context) {
         mNotes = notes;
-        mContext = context;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
