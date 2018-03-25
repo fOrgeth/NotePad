@@ -90,6 +90,7 @@ public class NoteEditorActivity extends AppCompatActivity {
             mCurrentNote.setTitle(title);
             NoteManager.getInstance().update(mCurrentNote);
         } else {
+            /** Need to rewrite?!*/
             Note note = new Note();
             note.setTitle(title);
             note.setBody(body);

@@ -61,12 +61,26 @@ public class NoteManager {
         return note;
     }
 
-    public long create(Note note) {
+    public void create(final Note note){
+        long id = realm.where(Note.class)
+                .findAll()
+                .last()
+                .getId() + 1;
+        note.setId(id);
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealm(note);
+            }
+        });
+    }
+
+    /*public long create(Note note) {
         return MyApp.getDB()
                 .addNote(note.getTitle(),
                         note.getBody(),
                         System.currentTimeMillis());
-    }
+    }*/
 
     public void update(Note note) {
         MyApp.getDB()
