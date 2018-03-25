@@ -11,9 +11,6 @@ import android.support.annotation.Nullable;
 
 abstract class DBSQLite extends SQLiteOpenHelper {
 
-    /* Private fields for store a link to the Context value */
-    private Context mContext = null;
-
     /* Constructor from super class */
     public DBSQLite(Context context, String name, CursorFactory factory,
                     int version, DatabaseErrorHandler errorHandler) {
@@ -21,8 +18,6 @@ abstract class DBSQLite extends SQLiteOpenHelper {
 		/* Invoke a parent method */
         super(context, name, factory, version, errorHandler);
 
-		/* Setting up Context value  */
-        mContext = context;
     }
 
     /* Constructor from super class */
@@ -32,17 +27,6 @@ abstract class DBSQLite extends SQLiteOpenHelper {
 		/* Invoke a parent method */
         super(context, name, factory, version);
 
-		/* Setting up Context value  */
-        mContext = context;
-    }
-
-    /**
-     * Get a link to the current Context object.
-     *
-     * @return Context object that using for this object.
-     */
-    Context getContext() {
-        return mContext;
     }
 
     /**

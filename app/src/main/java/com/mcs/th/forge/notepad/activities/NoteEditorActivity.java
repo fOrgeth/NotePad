@@ -110,8 +110,6 @@ public class NoteEditorActivity extends AppCompatActivity {
             case R.id.action_delete:
                 if (mCurrentNote != null) {
                     NoteManager.getInstance().delete(mCurrentNote);
-                } else {
-                    Toast.makeText(this, "You must save note before deleting", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.action_save:
@@ -123,6 +121,7 @@ public class NoteEditorActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
         startActivity(new Intent(this, MainActivity.class));
+        finish();
         return true;
 
     }

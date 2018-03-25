@@ -10,65 +10,35 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-public class Note {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
+public class Note extends RealmObject {
+
+    @PrimaryKey
     private Long id;
     private String title;
     private String body;
-    private Calendar dateCreated;
-    private Calendar dataModified;
+    private String dateCreated;
+//    private Calendar dataModified;
 
     private static final String TAG_LOG = "#Note#";
 
-    public String getReadableModifiedDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, yyyy - hh:mm a", Locale.getDefault());
-        sdf.setTimeZone(getDataModified().getTimeZone());
-        Date modifiedDate = getDataModified().getTime();
-        return sdf.format(modifiedDate);
-    }
-
-    public String getReadableCreatedDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy - h:mm a", Locale.getDefault());
-        sdf.setTimeZone(getDateCreated().getTimeZone());
-        Date modifiedDate = getDateCreated().getTime();
-        return sdf.format(modifiedDate);
-    }
-
-    public static Note getNoteFromCursor(Cursor cursor) {
-        Note note = new Note();
-        if (cursor == null) {
-            Log.d(TAG_LOG, "cursor = null!!! " + cursor);
-        }
-        note.setId(cursor.getLong(cursor.getColumnIndex("_id")));
-        note.setTitle(cursor.getString(cursor.getColumnIndex("TITLE")));
-        note.setBody(cursor.getString(cursor.getColumnIndex("BODY")));
-
-        /*Calendar calendar = GregorianCalendar.getInstance();
-
-        calendar.setTimeInMillis(cursor.getLong(cursor.getColumnIndex("DATE")));
-        note.setDateCreated(calendar);*/
-
-        Calendar calendar = GregorianCalendar.getInstance();
-        calendar.setTimeInMillis(cursor.getLong(cursor.getColumnIndex("DATE")));
-        note.setDateCreated(calendar);
-        return note;
-    }
-
-    public Calendar getDateCreated() {
+    public String getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(Calendar dateCreated) {
+    public void setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
     }
 
-    public Calendar getDataModified() {
+    /*public Calendar getDataModified() {
         return dataModified;
     }
 
     public void setDataModified(Calendar dataModified) {
         this.dataModified = dataModified;
-    }
+    }*/
 
     public Long getId() {
         return id;
@@ -92,6 +62,40 @@ public class Note {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    /*public String getReadableModifiedDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, yyyy - hh:mm a", Locale.getDefault());
+        sdf.setTimeZone(getDataModified().getTimeZone());
+        Date modifiedDate = getDataModified().getTime();
+        return sdf.format(modifiedDate);
+    }*/
+
+    /*public String getReadableCreatedDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy - h:mm a", Locale.getDefault());
+        sdf.setTimeZone(getDateCreated().getTimeZone());
+        Date modifiedDate = getDateCreated().getTime();
+        return sdf.format(modifiedDate);
+    }*/
+
+    public static Note getNoteFromCursor(Cursor cursor) {
+        Note note = new Note();
+        if (cursor == null) {
+            Log.d(TAG_LOG, "cursor = null!!! " + cursor);
+        }
+        note.setId(cursor.getLong(cursor.getColumnIndex("_id")));
+        note.setTitle(cursor.getString(cursor.getColumnIndex("TITLE")));
+        note.setBody(cursor.getString(cursor.getColumnIndex("BODY")));
+
+        /*Calendar calendar = GregorianCalendar.getInstance();
+
+        calendar.setTimeInMillis(cursor.getLong(cursor.getColumnIndex("DATE")));
+        note.setDateCreated(calendar);*/
+
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTimeInMillis(cursor.getLong(cursor.getColumnIndex("DATE")));
+        note.setDateCreated(calendar.toString());
+        return note;
     }
 
 

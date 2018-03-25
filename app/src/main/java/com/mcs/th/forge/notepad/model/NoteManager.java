@@ -3,22 +3,23 @@ package com.mcs.th.forge.notepad.model;
 import android.database.Cursor;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mcs.th.forge.notepad.MyApp;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+
 
 public class NoteManager {
-    //    private Context mContext;
+
     private static NoteManager sNoteManagerInstance = null;
+    private Realm realm;
+    private RealmResults<Note> notes;
+
     private final String TAG_LOG = "NoteManager";
 
-    /*public static NoteManager getInstance(Context context) {
-        if (sNoteManagerInstance == null) {
-            sNoteManagerInstance = new NoteManager(context.getApplicationContext());
-        }
-        return sNoteManagerInstance;
-    }*/
 
     public static NoteManager getInstance() {
         if (sNoteManagerInstance == null) {
@@ -28,20 +29,21 @@ public class NoteManager {
     }
 
     private NoteManager() {
-
+        realm = Realm.getDefaultInstance();
+        notes = realm.where(Note.class).findAllAsync();
     }
 
-   /* public long create(Note note) {
-        ContentValues values = new ContentValues();
-        values.put(DBNotes.TableNotes.C_TITLE, note.getTitle());
-        values.put(DBNotes.TableNotes.C_BODY, note.getBody());
-        values.put(DBNotes.TableNotes.C_DATE, System.currentTimeMillis());
-        return MyApp.getDB().addNote(values);
-    }*/
 
     public List<Note> getAllNotes() {
-        return MyApp.getDB().getAllNotes();
+        List<Note> resultNotesList = new ArrayList<>();
+        RealmResults<Note> notes = realm.where(Note.class).findAllAsync();
+        resultNotesList.addAll(notes);
+        return resultNotesList;
     }
+
+//    public List<Note> getAllNotes() {
+//        return MyApp.getDB().getAllNotes();
+//    }
 
     public Note getNote(Long id) {
         Note note;
@@ -77,5 +79,11 @@ public class NoteManager {
 
     public void delete(Note note) {
         MyApp.getDB().deleteNote(note.getId());
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        realm.close();
     }
 }

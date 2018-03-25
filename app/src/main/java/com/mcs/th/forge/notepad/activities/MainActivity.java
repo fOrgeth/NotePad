@@ -18,6 +18,7 @@ import com.mcs.th.forge.notepad.R;
 import com.mcs.th.forge.notepad.adapters.NoteListAdapter;
 import com.mcs.th.forge.notepad.model.Note;
 import com.mcs.th.forge.notepad.model.NoteManager;
+import com.mcs.th.forge.notepad.model.SampleNotes;
 
 import java.util.List;
 
@@ -38,13 +39,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SampleNotes.fillSampleNotes();
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         mFab = (FloatingActionButton) findViewById(R.id.fab);
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), NoteEditorActivity.class));
+                startActivity(new Intent(MainActivity.this, NoteEditorActivity.class));
             }
         });
     }
@@ -77,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
                     int position = rv.getChildLayoutPosition(child);
                     Note selectedNote = mNotes.get(position);
                     Intent editorIntent = new Intent(getApplicationContext(), NoteEditorActivity.class);
-                    editorIntent.putExtra(NoteEditorActivity.ROW_ID,selectedNote.getId());
-                    Log.d(TAG_LOG, "position = "+position+", intent.getExtra.getLong = "+editorIntent.getExtras().getLong("id"));
+                    editorIntent.putExtra(NoteEditorActivity.ROW_ID, selectedNote.getId());
+                    Log.d(TAG_LOG, "position = " + position + ", intent.getExtra.getLong = " + editorIntent.getExtras().getLong("id"));
                     startActivity(editorIntent);
                 }
                 return false;
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        mNotes= NoteManager.getInstance().getAllNotes();
+        mNotes = NoteManager.getInstance().getAllNotes();
         mAdapter = new NoteListAdapter(mNotes, this);
         mRecyclerView.setAdapter(mAdapter);
     }

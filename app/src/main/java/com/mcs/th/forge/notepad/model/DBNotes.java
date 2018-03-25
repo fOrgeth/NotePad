@@ -55,6 +55,7 @@ public class DBNotes extends DBSQLite {
         return notes;
     }
 
+    /** what a shit???
     public Note getNote(Long id) {
         Note note;
         Cursor cursor = MyApp.getDB().getReadableDatabase().query("tNotes",
@@ -69,11 +70,7 @@ public class DBNotes extends DBSQLite {
         }
         Log.d(TAG_LOG, "cursor returned = " + cursor);
         return null;
-    }
-
-    long addNote(ContentValues values) {
-        return this.getWritableDatabase().insert(TableNotes.T_NAME, null, values);
-    }
+    }*/
 
     long addNote(String title, String body, long date){
         ContentValues values = new ContentValues();

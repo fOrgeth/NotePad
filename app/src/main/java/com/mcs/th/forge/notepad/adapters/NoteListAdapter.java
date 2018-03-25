@@ -44,7 +44,8 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.noteTitle.setText(mNotes.get(position).getTitle());
-        holder.noteCreateDate.setText(mNotes.get(position).getReadableCreatedDate());
+        holder.noteCreateDate.setText(mNotes.get(position).getDateCreated());
+//        holder.noteCreateDate.setText(mNotes.get(position).getReadableCreatedDate());
 
     }
 
