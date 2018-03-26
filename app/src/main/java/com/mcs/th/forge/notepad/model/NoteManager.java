@@ -61,11 +61,14 @@ public class NoteManager {
         return note;
     }
 
-    public void create(final Note note){
-        long id = realm.where(Note.class)
-                .findAll()
-                .last()
-                .getId() + 1;
+    public void create(final Note note) {
+        Long id;
+        if (realm.where(Note.class).max("id") == null) {
+            id = 0L;
+        } else {
+            id = (long) realm.where(Note.class)
+                    .max("id") + 1;
+        }
         note.setId(id);
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -73,8 +76,18 @@ public class NoteManager {
                 realm.copyToRealm(note);
             }
         });
+        Log.d(TAG_LOG, "Note's id: " + id);
     }
 
+    public void delete(Note note){
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<Note> note = realm.where(Note.class).equalTo("id",1).findAll();
+                note.deleteAllFromRealm();
+            }
+        });
+    }
     /*public long create(Note note) {
         return MyApp.getDB()
                 .addNote(note.getTitle(),
@@ -91,9 +104,9 @@ public class NoteManager {
 
     }
 
-    public void delete(Note note) {
+    /*public void delete(Note note) {
         MyApp.getDB().deleteNote(note.getId());
-    }
+    }*/
 
     @Override
     protected void finalize() throws Throwable {
