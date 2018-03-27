@@ -111,6 +111,7 @@ public class NoteEditorActivity extends AppCompatActivity {
             case R.id.action_delete:
                 if (mCurrentNote != null) {
                     NoteManager.getInstance().delete(mCurrentNote);
+                    Toast.makeText(this, "Note deleted", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.action_save:

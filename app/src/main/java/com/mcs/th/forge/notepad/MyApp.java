@@ -11,7 +11,7 @@ import io.realm.RealmConfiguration;
 public class MyApp extends Application {
 
     /* Static file for store a link to the data base object */
-    private static DBNotes mDBNotes = null;
+//    private static DBNotes mDBNotes = null;
 
     /* Private field for store a LOG tag */
     public static final String LOG_TAG = "MyApp";
@@ -24,10 +24,10 @@ public class MyApp extends Application {
                 .name("notepad.realm")
                 .build();
         Realm.setDefaultConfiguration(realmConfig);
-        mDBNotes = new DBNotes(getApplicationContext());
+//        mDBNotes = new DBNotes(getApplicationContext());
     }
 
-    public static DBNotes getDB() {
+    /*public static DBNotes getDB() {
         return mDBNotes;
-    }
+    }*/
 }

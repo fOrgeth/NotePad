@@ -45,7 +45,7 @@ public class NoteManager {
 //        return MyApp.getDB().getAllNotes();
 //    }
 
-    public Note getNote(Long id) {
+    /*public Note getNote(Long id) {
         Note note;
         Cursor cursor = MyApp.getDB().getReadableDatabase().query("tNotes",
                 new String[]{"_id", "TITLE", "BODY", "DATE"}, "_id = " + id,
@@ -59,6 +59,10 @@ public class NoteManager {
         cursor.close();
         Log.d(TAG_LOG, "cursor returned = " + cursor);
         return note;
+    }*/
+
+    public Note getNote(Long id) {
+        return realm.where(Note.class).equalTo("id", id).findFirst();
     }
 
     public void create(final Note note) {
@@ -79,11 +83,22 @@ public class NoteManager {
         Log.d(TAG_LOG, "Note's id: " + id);
     }
 
-    public void delete(Note note){
+    public void update(Note note) {
+        Long id = note.getId();
+        Note noteUpdate = realm.where(Note.class).equalTo("id", id).findFirst();
+        realm.beginTransaction();
+        noteUpdate.setBody(note.getBody());
+        noteUpdate.setTitle(note.getTitle());
+        noteUpdate.setDateCreated(note.getDateCreated());
+        realm.commitTransaction();
+    }
+
+    public void delete(Note note) {
+        final Long id = note.getId();
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                RealmResults<Note> note = realm.where(Note.class).equalTo("id",1).findAll();
+                RealmResults<Note> note = realm.where(Note.class).equalTo("id", id).findAll();
                 note.deleteAllFromRealm();
             }
         });
@@ -95,14 +110,14 @@ public class NoteManager {
                         System.currentTimeMillis());
     }*/
 
-    public void update(Note note) {
+    /*public void update(Note note) {
         MyApp.getDB()
                 .updateNote(note.getTitle(),
                         note.getBody(),
                         System.currentTimeMillis(),
                         note.getId());
 
-    }
+    }*/
 
     /*public void delete(Note note) {
         MyApp.getDB().deleteNote(note.getId());
