@@ -54,10 +54,7 @@ public class NoteEditorActivity extends AppCompatActivity {
     private boolean isTitleBodyFilled() {
         String title = mTitleEditText.getText().toString();
         String body = mBodyEditText.getText().toString();
-        if (TextUtils.isEmpty(title) && TextUtils.isEmpty(body)) {
-            return false;
-        }
-        return true;
+        return !(TextUtils.isEmpty(title) && TextUtils.isEmpty(body));
     }
 
     private boolean saveNote() {
@@ -92,8 +89,11 @@ public class NoteEditorActivity extends AppCompatActivity {
                 break;
             case R.id.action_save:
                 if (isTitleBodyFilled()) {
-                    saveNote();
-                    Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();
+                    if (saveNote()) {
+                        Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Something wrong! Note was not saved", Toast.LENGTH_LONG).show();
+                    }
                     finish();
                 } else {
                     Toast.makeText(this, "Title and Body fill required", Toast.LENGTH_LONG).show();
@@ -103,6 +103,5 @@ public class NoteEditorActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
         return true;
-
     }
 }

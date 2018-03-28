@@ -39,10 +39,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        SampleNotes.fillSampleNotes();
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab = findViewById(R.id.fab);
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupList() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.note_recycler_view);
+        mRecyclerView = findViewById(R.id.note_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
