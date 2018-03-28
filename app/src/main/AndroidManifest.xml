@@ -22,7 +22,7 @@
         </activity>
         <activity android:name=".activities.NoteEditorActivity"
             android:label="@string/edit_activity"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

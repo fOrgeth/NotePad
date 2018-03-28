@@ -1,12 +1,10 @@
 package com.mcs.th.forge.notepad.model;
 
-import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mcs.th.forge.notepad.MyApp;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -16,7 +14,6 @@ public class NoteManager {
 
     private static NoteManager sNoteManagerInstance = null;
     private Realm realm;
-    private RealmResults<Note> notes;
 
     private final String TAG_LOG = "NoteManager";
 
@@ -30,7 +27,7 @@ public class NoteManager {
 
     private NoteManager() {
         realm = Realm.getDefaultInstance();
-        notes = realm.where(Note.class).findAllAsync();
+//        notes = realm.where(Note.class).findAllAsync();
     }
 
 
@@ -41,31 +38,11 @@ public class NoteManager {
         return resultNotesList;
     }
 
-//    public List<Note> getAllNotes() {
-//        return MyApp.getDB().getAllNotes();
-//    }
-
-    /*public Note getNote(Long id) {
-        Note note;
-        Cursor cursor = MyApp.getDB().getReadableDatabase().query("tNotes",
-                new String[]{"_id", "TITLE", "BODY", "DATE"}, "_id = " + id,
-                null, null, null, null);
-        if (cursor == null) {
-            return null;
-        }
-        cursor.moveToFirst();
-        Log.d(TAG_LOG, "cursor = " + cursor.getString(cursor.getColumnIndex("TITLE")));
-        note = Note.getNoteFromCursor(cursor);
-        cursor.close();
-        Log.d(TAG_LOG, "cursor returned = " + cursor);
-        return note;
-    }*/
-
     public Note getNote(Long id) {
         return realm.where(Note.class).equalTo("id", id).findFirst();
     }
 
-    public void create(final Note note) {
+    /*public void create(Note note) {
         Long id;
         if (realm.where(Note.class).max("id") == null) {
             id = 0L;
@@ -73,55 +50,51 @@ public class NoteManager {
             id = (long) realm.where(Note.class)
                     .max("id") + 1;
         }
-        note.setId(id);
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                realm.copyToRealm(note);
-            }
-        });
-        Log.d(TAG_LOG, "Note's id: " + id);
-    }
-
-    public void update(Note note) {
-        Long id = note.getId();
-        Note noteUpdate = realm.where(Note.class).equalTo("id", id).findFirst();
         realm.beginTransaction();
-        noteUpdate.setBody(note.getBody());
-        noteUpdate.setTitle(note.getTitle());
-        noteUpdate.setDateCreated(note.getDateCreated());
+        note.setId(id);
+        realm.copyToRealm(note);
+        realm.commitTransaction();
+    }*/
+
+    public void create(String title, String body) {
+        Long id;
+        if (realm.where(Note.class).max("id") == null) {
+            id = 0L;
+        } else {
+            id = (long) realm.where(Note.class)
+                    .max("id") + 1;
+        }
+        Note note = new Note();
+        realm.beginTransaction();
+        note.setId(id);
+        note.setTitle(title);
+        note.setBody(body);
+        realm.copyToRealm(note);
         realm.commitTransaction();
     }
 
-    public void delete(Note note) {
-        final Long id = note.getId();
-        realm.executeTransaction(new Realm.Transaction() {
+    public void update(String title, String body, Long id) {
+        Note noteUpdate = realm.where(Note.class).equalTo("id", id).findFirst();
+        realm.beginTransaction();
+        noteUpdate.setTitle(title);
+        noteUpdate.setBody(body);
+//        noteUpdate.setDateCreated(note.getDateCreated());
+        realm.commitTransaction();
+    }
+
+    public void delete(@NonNull Long id) {
+        /*realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 RealmResults<Note> note = realm.where(Note.class).equalTo("id", id).findAll();
                 note.deleteAllFromRealm();
             }
-        });
+        });*/
+        realm.beginTransaction();
+        RealmResults<Note> note = realm.where(Note.class).equalTo("id", id).findAll();
+        note.deleteAllFromRealm();
+        realm.commitTransaction();
     }
-    /*public long create(Note note) {
-        return MyApp.getDB()
-                .addNote(note.getTitle(),
-                        note.getBody(),
-                        System.currentTimeMillis());
-    }*/
-
-    /*public void update(Note note) {
-        MyApp.getDB()
-                .updateNote(note.getTitle(),
-                        note.getBody(),
-                        System.currentTimeMillis(),
-                        note.getId());
-
-    }*/
-
-    /*public void delete(Note note) {
-        MyApp.getDB().deleteNote(note.getId());
-    }*/
 
     @Override
     protected void finalize() throws Throwable {
