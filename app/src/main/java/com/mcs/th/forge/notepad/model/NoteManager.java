@@ -33,13 +33,11 @@ public class NoteManager {
     }
 
     public String getCurrentDate() {
-        /*SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy - h:mm a", Locale.getDefault());
-        sdf.setTimeZone(getDateCreated().getTimeZone());
-        Date modifiedDate = getDateCreated().getTime();*/
-
-
-        return Calendar.getInstance().getTime().toString();
-
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, yyyy - h:mm a", Locale.getDefault());
+        Calendar calendar = Calendar.getInstance();
+        sdf.setTimeZone(calendar.getTimeZone());
+        Date modifiedDate = calendar.getTime();
+        return sdf.format(modifiedDate);
     }
 
 
@@ -68,7 +66,6 @@ public class NoteManager {
         note.setTitle(title);
         note.setBody(body);
         note.setDateCreated(getCurrentDate());
-        note.setDataModified(getCurrentDate());
         realm.copyToRealm(note);
         realm.commitTransaction();
     }
