@@ -32,12 +32,9 @@ public class NoteManager {
         realm = Realm.getDefaultInstance();
     }
 
-    public String getCurrentDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, yyyy - h:mm a", Locale.getDefault());
+    private Date getCurrentDate() {
         Calendar calendar = Calendar.getInstance();
-        sdf.setTimeZone(calendar.getTimeZone());
-        Date modifiedDate = calendar.getTime();
-        return sdf.format(modifiedDate);
+        return calendar.getTime();
     }
 
 

@@ -20,7 +20,7 @@ public class SampleNotes {
                     myNote.setId(y);
                     myNote.setTitle("Note #" + y);
                     myNote.setBody("Body note #" + y);
-                    myNote.setDateCreated(Calendar.getInstance().getTime().toString());
+                    myNote.setDateCreated(Calendar.getInstance().getTime());
                     realm.copyToRealmOrUpdate(myNote);
                 }
             });

@@ -2,6 +2,7 @@ package com.mcs.th.forge.notepad.adapters;
 
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +13,11 @@ import android.widget.TextView;
 import com.mcs.th.forge.notepad.R;
 import com.mcs.th.forge.notepad.model.Note;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHolder> {
     private List<Note> mNotes;
@@ -35,19 +40,24 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
         }
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View rowView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row_note_list, parent, false);
         return new ViewHolder(rowView);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.noteTitle.setText(mNotes.get(position).getTitle());
-        holder.noteCreateDate.setText(mNotes.get(position).getDateCreated());
-        holder.noteModifeDate.setText(mNotes.get(position).getDataModified());
-
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, yyyy - h:mm a", Locale.getDefault());
+        Calendar calendar = Calendar.getInstance();
+        sdf.setTimeZone(calendar.getTimeZone());
+        holder.noteCreateDate.setText(sdf.format(mNotes.get(position).getDateCreated()));
+        if (mNotes.get(position).getDataModified() != null) {
+            holder.noteModifeDate.setText(sdf.format(mNotes.get(position).getDataModified()));
+        }
     }
 
     @Override
