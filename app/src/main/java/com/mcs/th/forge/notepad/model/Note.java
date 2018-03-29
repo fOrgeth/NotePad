@@ -20,7 +20,7 @@ public class Note extends RealmObject {
     private String title;
     private String body;
     private String dateCreated;
-//    private Calendar dataModified;
+    private String dataModified;
 
     private static final String TAG_LOG = "#Note#";
 
@@ -32,13 +32,13 @@ public class Note extends RealmObject {
         this.dateCreated = dateCreated;
     }
 
-    /*public Calendar getDataModified() {
+    public String getDataModified() {
         return dataModified;
     }
 
-    public void setDataModified(Calendar dataModified) {
+    public void setDataModified(String dataModified) {
         this.dataModified = dataModified;
-    }*/
+    }
 
     public Long getId() {
         return id;

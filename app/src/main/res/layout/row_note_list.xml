@@ -25,5 +25,15 @@
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="@dimen/text_size_normal"
         android:textStyle="italic"/>
+    <TextView
+        android:id="@+id/text_view_note_modify_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:fontFamily="sans-serif-bold"
+        android:gravity="start"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="@dimen/text_size_normal"
+        android:textStyle="italic"/>
 
 </LinearLayout>

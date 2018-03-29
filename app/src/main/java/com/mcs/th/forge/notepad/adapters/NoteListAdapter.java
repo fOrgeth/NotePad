@@ -23,14 +23,15 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView noteTitle, noteCreateDate;
+        private final TextView noteTitle, noteCreateDate, noteModifeDate;
         private CardView cardView;
 
         public ViewHolder(View v) {
             super(v);
 //            this.cardView = v;
-            noteTitle = (TextView) v.findViewById(R.id.text_view_note_title);
-            noteCreateDate = (TextView) v.findViewById(R.id.text_view_note_date);
+            noteTitle = v.findViewById(R.id.text_view_note_title);
+            noteCreateDate = v.findViewById(R.id.text_view_note_date);
+            noteModifeDate = v.findViewById(R.id.text_view_note_modify_date);
         }
     }
 
@@ -45,7 +46,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.noteTitle.setText(mNotes.get(position).getTitle());
         holder.noteCreateDate.setText(mNotes.get(position).getDateCreated());
-//        holder.noteCreateDate.setText(mNotes.get(position).getReadableCreatedDate());
+        holder.noteModifeDate.setText(mNotes.get(position).getDataModified());
 
     }
 

@@ -1,10 +1,14 @@
 package com.mcs.th.forge.notepad.model;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
+import android.support.annotation.Nullable;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -17,7 +21,6 @@ public class NoteManager {
 
     private final String TAG_LOG = "NoteManager";
 
-
     public static NoteManager getInstance() {
         if (sNoteManagerInstance == null) {
             sNoteManagerInstance = new NoteManager();
@@ -27,7 +30,16 @@ public class NoteManager {
 
     private NoteManager() {
         realm = Realm.getDefaultInstance();
-//        notes = realm.where(Note.class).findAllAsync();
+    }
+
+    public String getCurrentDate() {
+        /*SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy - h:mm a", Locale.getDefault());
+        sdf.setTimeZone(getDateCreated().getTimeZone());
+        Date modifiedDate = getDateCreated().getTime();*/
+
+
+        return Calendar.getInstance().getTime().toString();
+
     }
 
 
@@ -42,20 +54,6 @@ public class NoteManager {
         return realm.where(Note.class).equalTo("id", id).findFirst();
     }
 
-    /*public void create(Note note) {
-        Long id;
-        if (realm.where(Note.class).max("id") == null) {
-            id = 0L;
-        } else {
-            id = (long) realm.where(Note.class)
-                    .max("id") + 1;
-        }
-        realm.beginTransaction();
-        note.setId(id);
-        realm.copyToRealm(note);
-        realm.commitTransaction();
-    }*/
-
     public void create(String title, String body) {
         Long id;
         if (realm.where(Note.class).max("id") == null) {
@@ -69,6 +67,8 @@ public class NoteManager {
         note.setId(id);
         note.setTitle(title);
         note.setBody(body);
+        note.setDateCreated(getCurrentDate());
+        note.setDateCreated(getCurrentDate());
         realm.copyToRealm(note);
         realm.commitTransaction();
     }
@@ -78,18 +78,11 @@ public class NoteManager {
         realm.beginTransaction();
         noteUpdate.setTitle(title);
         noteUpdate.setBody(body);
-//        noteUpdate.setDateCreated(note.getDateCreated());
+        noteUpdate.setDataModified(getCurrentDate());
         realm.commitTransaction();
     }
 
     public void delete(@NonNull Long id) {
-        /*realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                RealmResults<Note> note = realm.where(Note.class).equalTo("id", id).findAll();
-                note.deleteAllFromRealm();
-            }
-        });*/
         realm.beginTransaction();
         RealmResults<Note> note = realm.where(Note.class).equalTo("id", id).findAll();
         note.deleteAllFromRealm();
