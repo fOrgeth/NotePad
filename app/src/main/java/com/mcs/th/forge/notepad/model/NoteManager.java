@@ -68,7 +68,7 @@ public class NoteManager {
         note.setTitle(title);
         note.setBody(body);
         note.setDateCreated(getCurrentDate());
-        note.setDateCreated(getCurrentDate());
+        note.setDataModified(getCurrentDate());
         realm.copyToRealm(note);
         realm.commitTransaction();
     }
