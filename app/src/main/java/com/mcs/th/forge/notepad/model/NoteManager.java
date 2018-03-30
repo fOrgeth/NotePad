@@ -1,14 +1,11 @@
 package com.mcs.th.forge.notepad.model;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -33,16 +30,12 @@ public class NoteManager {
     }
 
     private Date getCurrentDate() {
-        Calendar calendar = Calendar.getInstance();
-        return calendar.getTime();
+        return Calendar.getInstance().getTime();
     }
 
-
     public List<Note> getAllNotes() {
-        List<Note> resultNotesList = new ArrayList<>();
         RealmResults<Note> notes = realm.where(Note.class).findAllAsync();
-        resultNotesList.addAll(notes);
-        return resultNotesList;
+        return new ArrayList<>(notes);
     }
 
     public Note getNote(Long id) {

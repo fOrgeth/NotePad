@@ -1,7 +1,6 @@
 package com.mcs.th.forge.notepad.adapters;
 
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -15,20 +14,19 @@ import com.mcs.th.forge.notepad.model.Note;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHolder> {
-    private List<Note> mNotes;
+    private List<Note> notes;
 
-    public NoteListAdapter(List<Note> notes, Context context) {
-        mNotes = notes;
+    public NoteListAdapter(List<Note> notes) {
+        this.notes = notes;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView noteTitle, noteCreateDate, noteModifeDate;
+        private final TextView noteTitle, noteCreateDate, noteModifyDate;
         private CardView cardView;
 
         public ViewHolder(View v) {
@@ -36,7 +34,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
 //            this.cardView = v;
             noteTitle = v.findViewById(R.id.text_view_note_title);
             noteCreateDate = v.findViewById(R.id.text_view_note_date);
-            noteModifeDate = v.findViewById(R.id.text_view_note_modify_date);
+            noteModifyDate = v.findViewById(R.id.text_view_note_modify_date);
         }
     }
 
@@ -50,18 +48,18 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.noteTitle.setText(mNotes.get(position).getTitle());
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, yyyy - h:mm a", Locale.getDefault());
+        holder.noteTitle.setText(notes.get(position).getTitle());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, yyyy - hh:mm:ss", Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
         sdf.setTimeZone(calendar.getTimeZone());
-        holder.noteCreateDate.setText(sdf.format(mNotes.get(position).getDateCreated()));
-        if (mNotes.get(position).getDataModified() != null) {
-            holder.noteModifeDate.setText(sdf.format(mNotes.get(position).getDataModified()));
+        holder.noteCreateDate.setText(sdf.format(notes.get(position).getDateCreated()));
+        if (notes.get(position).getDataModified() != null) {
+            holder.noteModifyDate.setText(sdf.format(notes.get(position).getDataModified()));
         }
     }
 
     @Override
     public int getItemCount() {
-        return mNotes.size();
+        return notes.size();
     }
 }

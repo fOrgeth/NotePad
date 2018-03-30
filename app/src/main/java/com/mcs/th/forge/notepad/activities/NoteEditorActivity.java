@@ -11,16 +11,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.mcs.th.forge.notepad.R;
-import com.mcs.th.forge.notepad.model.Note;
 import com.mcs.th.forge.notepad.model.NoteManager;
 
 
 public class NoteEditorActivity extends AppCompatActivity {
 
-    private Toolbar mToolbar;
-    private EditText mTitleEditText;
-    private EditText mBodyEditText;
-    private Long mCurId;
+    private Toolbar toolbar;
+    private EditText titleEditText;
+    private EditText bodyEditText;
+    private Long curId;
     private final String TAG_LOG = "NoteEditorActivity";
 
     public static final String ROW_ID = "id";
@@ -29,13 +28,13 @@ public class NoteEditorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_editor);
-        mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mTitleEditText = findViewById(R.id.edit_text_title);
-        mBodyEditText = findViewById(R.id.edit_text_note);
+        titleEditText = findViewById(R.id.edit_text_title);
+        bodyEditText = findViewById(R.id.edit_text_note);
         Bundle extras = getIntent().getExtras();
-        mCurId = extras != null ? extras.getLong(ROW_ID) : null;
+        curId = extras != null ? extras.getLong(ROW_ID) : null;
     }
 
     @Override
@@ -45,25 +44,25 @@ public class NoteEditorActivity extends AppCompatActivity {
     }
 
     private void populateFields() {
-        if (mCurId != null) {
-            mTitleEditText.setText(NoteManager.getInstance().getNote(mCurId).getTitle());
-            mBodyEditText.setText(NoteManager.getInstance().getNote(mCurId).getBody());
+        if (curId != null) {
+            titleEditText.setText(NoteManager.getInstance().getNote(curId).getTitle());
+            bodyEditText.setText(NoteManager.getInstance().getNote(curId).getBody());
         }
     }
 
     private boolean isTitleBodyFilled() {
-        String title = mTitleEditText.getText().toString();
-        String body = mBodyEditText.getText().toString();
+        String title = titleEditText.getText().toString();
+        String body = bodyEditText.getText().toString();
         return !(TextUtils.isEmpty(title) && TextUtils.isEmpty(body));
     }
 
     private boolean saveNote() {
-        String title = mTitleEditText.getText().toString();
-        String body = mBodyEditText.getText().toString();
+        String title = titleEditText.getText().toString();
+        String body = bodyEditText.getText().toString();
         Log.d(TAG_LOG, "title = " + title + ", body = " + body);
-        if (mCurId != null) {
+        if (curId != null) {
             Log.d(TAG_LOG, "mCurrentNote != null");
-            Long id = NoteManager.getInstance().getNote(mCurId).getId();
+            Long id = NoteManager.getInstance().getNote(curId).getId();
             NoteManager.getInstance().update(title, body, id);
         } else {
             NoteManager.getInstance().create(title, body);
@@ -81,8 +80,8 @@ public class NoteEditorActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete:
-                if (mCurId != null) {
-                    NoteManager.getInstance().delete(mCurId);
+                if (curId != null) {
+                    NoteManager.getInstance().delete(curId);
                     Toast.makeText(this, "Note deleted", Toast.LENGTH_SHORT).show();
                 }
                 finish();

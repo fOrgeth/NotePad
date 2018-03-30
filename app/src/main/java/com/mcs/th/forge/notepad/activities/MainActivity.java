@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,18 +17,17 @@ import com.mcs.th.forge.notepad.R;
 import com.mcs.th.forge.notepad.adapters.NoteListAdapter;
 import com.mcs.th.forge.notepad.model.Note;
 import com.mcs.th.forge.notepad.model.NoteManager;
-import com.mcs.th.forge.notepad.model.SampleNotes;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FloatingActionButton mFab;
-    private Toolbar mToolbar;
-    private RecyclerView mRecyclerView;
-    private NoteListAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private List<Note> mNotes;
+    private FloatingActionButton fab;
+    private Toolbar toolbar;
+    private RecyclerView recyclerView;
+    private NoteListAdapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private List<Note> notes;
     private static final int ACTIVITY_CREATE = 0;
     private static final int ACTIVITY_EDIT = 1;
 
@@ -39,10 +37,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        mFab = findViewById(R.id.fab);
-        mFab.setOnClickListener(new View.OnClickListener() {
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, NoteEditorActivity.class));
@@ -57,12 +55,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupList() {
-        mRecyclerView = findViewById(R.id.note_recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        recyclerView = findViewById(R.id.note_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
-        final GestureDetector mGestureDetector =
+        final GestureDetector gestureDetector =
                 new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
                     @Override
                     public boolean onSingleTapUp(MotionEvent e) {
@@ -70,16 +68,17 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
             public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
                 View child = rv.findChildViewUnder(e.getX(), e.getY());
-                if (child != null && mGestureDetector.onTouchEvent(e)) {
+                if (child != null && gestureDetector.onTouchEvent(e)) {
                     int position = rv.getChildLayoutPosition(child);
-                    Note selectedNote = mNotes.get(position);
+
+                    /** Need to redesign */
+                    Note selectedNote = notes.get(position);
                     Intent editorIntent = new Intent(getApplicationContext(), NoteEditorActivity.class);
                     editorIntent.putExtra(NoteEditorActivity.ROW_ID, selectedNote.getId());
-                    Log.d(TAG_LOG, "position = " + position + ", intent.getExtra.getLong = " + editorIntent.getExtras().getLong("id"));
                     startActivity(editorIntent);
                 }
                 return false;
@@ -95,9 +94,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        mNotes = NoteManager.getInstance().getAllNotes();
-        mAdapter = new NoteListAdapter(mNotes, this);
-        mRecyclerView.setAdapter(mAdapter);
+        notes = NoteManager.getInstance().getAllNotes();
+        adapter = new NoteListAdapter(notes);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -112,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

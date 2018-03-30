@@ -8,7 +8,6 @@ import io.realm.RealmConfiguration;
 
 public class MyApp extends Application {
 
-    /* Private field for store a LOG tag */
     public static final String LOG_TAG = "MyApp";
 
     @Override
