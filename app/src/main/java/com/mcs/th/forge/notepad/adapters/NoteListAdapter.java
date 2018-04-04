@@ -49,7 +49,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.noteTitle.setText(notes.get(position).getTitle());
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, yyyy - hh:mm:ss", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, yyyy - HH:mm:ss", Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
         sdf.setTimeZone(calendar.getTimeZone());
         holder.noteCreateDate.setText(sdf.format(notes.get(position).getDateCreated()));
