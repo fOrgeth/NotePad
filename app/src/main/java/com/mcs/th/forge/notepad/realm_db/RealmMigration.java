@@ -14,8 +14,6 @@ public class RealmMigration implements io.realm.RealmMigration {
         if (oldVersion == 1) {
             final RealmObjectSchema userSchema = schema.get("Note");
             userSchema.removeField("dataModified");
-            /*schema.get("Note")
-                    .removeField("dataModified");*/
             oldVersion++;
         }
         if (oldVersion == 2) {
